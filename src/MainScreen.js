@@ -8,8 +8,8 @@ class MainScreen extends React.Component {
         this.state = {
             symbolInput: '',
             symbol: '',
-            sentimentPct: 0,
-            technicalPct: 100
+            sentimentPct: -1,
+            technicalPct: -1
         };
 
         this.handleChange = this.handleChange.bind(this);
