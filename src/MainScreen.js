@@ -1,5 +1,7 @@
 import React from 'react'
 import './MainScreen.css'
+import Slider from 'react-rangeslider'
+import 'react-rangeslider/lib/index.css'
 import ResultsPage from './components/ResultsPage'
 
 class MainScreen extends React.Component {
@@ -8,13 +10,21 @@ class MainScreen extends React.Component {
         this.state = {
             symbolInput: '',
             symbol: '',
-            sentimentPct: 0,
-            technicalPct: 100
+            sentimentPct: -1,
+            technicalPct: -1,
+            value1: 50,
+            listdata: [ {key: "BLK", value: "Blackrock"}, {key: "MSFT", value: "Microsoft"} ]
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+    handleChange2 = value1 => {
+      this.setState({
+        value1: value1
+      })
+    };
 
     handleChange(event) {
         this.setState({ symbolInput: event.target.value });
@@ -25,41 +35,50 @@ class MainScreen extends React.Component {
         this.setState(prevState => ({ symbol: prevState.symbolInput }))
     }
 
-    data = [ {key: "BLK", value: "Blackrock"}, {key: "MSFT", value: "Microsoft"} ]
-
     render() {
+      const test = {
+        0: 'High Sentiment',
+        50: 'Medium Sentiment and Technical',
+        100: 'High Technical'
+      }
         if (this.state.symbol === '') {
             return (
-                // <p>search bar goes here</p>
                 <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Choose the stock symbol you are interested in:<br/>
-                        <input value={this.state.symbolInput} onChange={this.handleChange} type="text" />
+                    <label>Choose the stock symbol you are interested in:<br/>
+                    <select style={{width:200}} onChange={this.handleChange}>
+                        <option selected="selected"></option>
+                        {this.state.listdata.map(dataTemplate => (
+                            <option key={dataTemplate.key} value={dataTemplate.key}>
+                                {dataTemplate.key}
+                            </option>
+                        ))}
+                    </select>
                     </label>
                     <input id="select" type="submit" value="Select"/>
                 </form>
-                
             )
         } else if (this.state.sentimentPct === -1) {
+          const { value1 } = this.state
             return (
-                <div>
-                    <p>percentage picking bar goes here</p>
-                    <label for="customRange2">Example range</label>
-                    
-                    <form>
-                        <label>Sentiment</label>
-                        <input type="range" class="custom-range" min="0" max="100" step="5" id="customRange"></input>
-                        <label>Technical</label>
-                    </form>
-                    
-                </div>
-                
+              <div className='slider'>
+                <Slider
+                  min={0}
+                  max={100}
+                  value={value1}
+                  step={1}
+                  labels={test}
+                  // onChangeStart={this.handleChangeStart}
+                  onChange={this.handleChange2}
+                  // onChangeComplete={this.handleChangeComplete}
+                />
+                <div className='value'>{value1}</div>
+              </div>
             )
         } else {
             return (
-                <ResultsPage 
-                    symbol={this.state.symbol} 
-                    techPct={this.state.technicalPct} 
+                <ResultsPage
+                    symbol={this.state.symbol}
+                    techPct={this.state.technicalPct}
                     sentPct={this.state.sentimentPct}
                 />
             )
