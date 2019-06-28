@@ -8,7 +8,8 @@ class MainScreen extends React.Component {
             symbolInput: '',
             symbol: '',
             sentimentPct: -1,
-            technicalPct: -1
+            technicalPct: -1,
+            listdata: [ {key: "BLK", value: "Blackrock"}, {key: "MSFT", value: "Microsoft"} ]
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -24,20 +25,21 @@ class MainScreen extends React.Component {
         this.setState(prevState => ({ symbol: prevState.symbolInput }))
     }
 
-    data = [ {key: "BLK", value: "Blackrock"}, {key: "MSFT", value: "Microsoft"} ]
-
     render() {
         if (this.state.symbol === '') {
             return (
-                // <p>search bar goes here</p>
                 <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Choose the stock symbol you are interested in:<br/>
-                        <input value={this.state.symbolInput} onChange={this.handleChange} type="text" />
+                    <label>Choose the stock symbol you are interested in:<br/>
+                    <select style={{width:200}} onChange={this.handleChange}>
+                        {this.state.listdata.map(dataTemplate => (
+                            <option key={dataTemplate.key} value={dataTemplate.key}>
+                                {dataTemplate.key}
+                            </option>
+                        ))}
+                    </select>
                     </label>
                     <input id="select" type="submit" value="Select"/>
                 </form>
-                
             )
         } else if (this.state.sentimentPct === -1) {
             return (
@@ -50,9 +52,7 @@ class MainScreen extends React.Component {
                         <input type="range" class="custom-range" min="0" max="100" step="5" id="customRange"></input>
                         <label>Technical</label>
                     </form>
-                    
                 </div>
-                
             )
         } else {
             return (
