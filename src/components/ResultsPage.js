@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container , Row, Col, ListGroup } from "react-bootstrap";
 import './ResultsPage.css'
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ReferenceLine } from 'recharts'
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ReferenceLine, ResponsiveContainer } from 'recharts'
 
 class ResultsPage extends React.Component {
     constructor(props) {
@@ -59,7 +59,7 @@ class ResultsPage extends React.Component {
 
     useRSIData(data) {
         const rsiData = data["Technical Analysis: RSI"]
-        console.log(rsiData)
+        // console.log(rsiData)
         // console.log(Object.keys(rsiData))
         var RSIobj = {}
         for (let date of Object.keys(rsiData).slice(1, 101)) {
@@ -156,7 +156,7 @@ class ResultsPage extends React.Component {
 
     getChartData() {
         var chartDataList = []
-        console.log(Object.keys(this.state.priceData))
+        // console.log(Object.keys(this.state.priceData))
         for (let dataDate of Object.keys(this.state.priceData)) {
             chartDataList.push({ 
                 date: dataDate,
@@ -166,7 +166,7 @@ class ResultsPage extends React.Component {
                 RSI: this.state.rsiData[dataDate]['RSI']
             })
         }
-        console.log(chartDataList)
+        // console.log(chartDataList)
         // this.setState({chartData: chartDataList})
         return chartDataList.reverse()
     }
@@ -214,47 +214,51 @@ class ResultsPage extends React.Component {
                             </ListGroup>
                         </Col>
                     </Row>
+                    <hr />
                     {Object.keys(this.state.pbData).map(date => {
                         if (this.state.pbData[date]['pb'] < 0.1 && this.state.rsiData[date]['RSI'] < 35) {
                             return ( <Row className="date-good-bad"><p className="good-date">{date} is good for buying because %B is low and RSI is low. </p> </Row> )
                         } else if (this.state.pbData[date]['pb'] > 0.9 && this.state.rsiData[date]['RSI'] > 75) {
                             return ( <Row className="date-good-bad"><p className="bad-date">{date} is bad for buying because %B is high and RSI is high. </p> </Row> )
                         } else {
-                            return ("")
+                            return (null)
                         }
                     })}
                     <Row >
-                        
-                        <LineChart width={700} height={400} data={chartData} syncId="1">
-                            <Line type="monotone" dataKey="price" stroke="#8884d8" />
-                            <Line type="monotone" dataKey="lowerBBand" stroke="#edaa2d" />
-                            <Line type="monotone" dataKey="upperBBand" stroke="#ff9100" />
-                            <XAxis dataKey="date" minTickGap={15} padding={{left:20, right:20}}/>
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            {Object.keys(this.state.pbData).map(date => {
-                                if (this.state.pbData[date]['pb'] < 0.1 && this.state.rsiData[date]['RSI'] < 35) {
-                                    return ( <ReferenceLine x={date} stroke="green" label="good" /> )
-                                } else if (this.state.pbData[date]['pb'] > 0.9 && this.state.rsiData[date]['RSI'] > 75) {
-                                    return ( <ReferenceLine x={date} stroke="red" label="bad" /> )
-                                }
-                            })}
-                        </LineChart>
-                        <LineChart width={700} height={150} data={chartData} syncId="1">
-                            <Line type="monotone" dataKey="RSI" stroke="#226ae6" />
-                            <XAxis dataKey="date" minTickGap={15} padding={{left:20, right:20}}/>
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            {Object.keys(this.state.pbData).map(date => {
-                                if (this.state.pbData[date]['pb'] < 0.1 && this.state.rsiData[date]['RSI'] < 35) {
-                                    return ( <ReferenceLine x={date} stroke="green" /> )
-                                } else if (this.state.pbData[date]['pb'] > 0.9 && this.state.rsiData[date]['RSI'] > 75) {
-                                    return ( <ReferenceLine x={date} stroke="red" /> )
-                                }
-                            })}
-                        </LineChart>
+                        <ResponsiveContainer width="100%" height={400}>
+                            <LineChart width={700} height={400} data={chartData} syncId="1">
+                                <Line type="monotone" dataKey="price" stroke="#8884d8" dot="false"/>
+                                <Line type="monotone" dataKey="lowerBBand" stroke="#edaa2d" />
+                                <Line type="monotone" dataKey="upperBBand" stroke="#ff9100" />
+                                <XAxis dataKey="date" minTickGap={15} padding={{left:20, right:20}}/>
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                {Object.keys(this.state.pbData).map(date => {
+                                    if (this.state.pbData[date]['pb'] < 0.1 && this.state.rsiData[date]['RSI'] < 35) {
+                                        return ( <ReferenceLine x={date} stroke="green" label="good" /> )
+                                    } else if (this.state.pbData[date]['pb'] > 0.9 && this.state.rsiData[date]['RSI'] > 75) {
+                                        return ( <ReferenceLine x={date} stroke="red" label="bad" /> )
+                                    } else {return null}
+                                })}
+                            </LineChart>
+                        </ResponsiveContainer >
+                        <ResponsiveContainer width="100%" height={150}>
+                            <LineChart width={700} height={150} data={chartData} syncId="1">
+                                <Line type="monotone" dataKey="RSI" stroke="#226ae6" />
+                                <XAxis dataKey="date" minTickGap={15} padding={{left:20, right:20}}/>
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                {Object.keys(this.state.pbData).map(date => {
+                                    if (this.state.pbData[date]['pb'] < 0.1 && this.state.rsiData[date]['RSI'] < 35) {
+                                        return ( <ReferenceLine x={date} stroke="green" /> )
+                                    } else if (this.state.pbData[date]['pb'] > 0.9 && this.state.rsiData[date]['RSI'] > 75) {
+                                        return ( <ReferenceLine x={date} stroke="red" /> )
+                                    } else {return null}
+                                })}
+                            </LineChart>
+                        </ResponsiveContainer >
                     </Row>
                 </Container>
                 

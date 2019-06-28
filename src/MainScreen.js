@@ -4,6 +4,7 @@ import Slider from 'react-rangeslider'
 import 'react-rangeslider/lib/index.css'
 import ResultsPage from './components/ResultsPage'
 import logo from './logo.jpg'
+import {Button, Row, Col} from 'react-bootstrap'
 
 class MainScreen extends React.Component {
     constructor(props) {
@@ -19,6 +20,7 @@ class MainScreen extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSubmitPcts = this.handleSubmitPcts.bind(this);
     }
 
     handleChange2 = value1 => {
@@ -34,6 +36,10 @@ class MainScreen extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         this.setState(prevState => ({ symbol: prevState.symbolInput }))
+    }
+
+    handleSubmitPcts() {
+        this.setState({ sentimentPct: 100 - this.state.value1, technicalPct: this.state.value1 })
     }
 
     render() {
@@ -75,7 +81,11 @@ class MainScreen extends React.Component {
                   onChange={this.handleChange2}
                   // onChangeComplete={this.handleChangeComplete}
                 />
-                <div className='value'>{value1}</div>
+                <Row id='valuesRow'>
+                    <Col id="sentValue"> {100 - value1}%</Col>
+                    <Col id="techValue"> {value1}%</Col>
+                </Row>
+                <Button onClick={this.handleSubmitPcts}>Submit</Button>
               </div>
             )
         } else {

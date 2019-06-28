@@ -13,3 +13,17 @@
 #logo {
   padding-bottom: 2.5em;
 }
+
+#techValue {
+    text-align: right;
+}
+
+#sentvalue {
+    text-align: left;
+    padding-left: -1em
+}
+
+#valuesRow {
+    width: 100%;
+    margin-top: 2em
+}
