@@ -1,5 +1,6 @@
 import React from 'react'
 import './MainScreen.css'
+import ResultsPage from './components/ResultsPage'
 
 class MainScreen extends React.Component {
     constructor(props) {
@@ -7,8 +8,8 @@ class MainScreen extends React.Component {
         this.state = {
             symbolInput: '',
             symbol: '',
-            sentimentPct: -1,
-            technicalPct: -1
+            sentimentPct: 0,
+            technicalPct: 100
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -56,7 +57,11 @@ class MainScreen extends React.Component {
             )
         } else {
             return (
-                <p>graph and stuff goes here</p>
+                <ResultsPage 
+                    symbol={this.state.symbol} 
+                    techPct={this.state.technicalPct} 
+                    sentPct={this.state.sentimentPct}
+                />
             )
         }
     }
