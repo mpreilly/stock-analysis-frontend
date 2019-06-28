@@ -32,6 +32,7 @@ class MainScreen extends React.Component {
                 <form onSubmit={this.handleSubmit}>
                     <label>Choose the stock symbol you are interested in:<br/>
                     <select style={{width:200}} onChange={this.handleChange}>
+                        <option selected="selected"></option>
                         {this.state.listdata.map(dataTemplate => (
                             <option key={dataTemplate.key} value={dataTemplate.key}>
                                 {dataTemplate.key}
