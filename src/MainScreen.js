@@ -22,6 +22,7 @@ class MainScreen extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSubmitPcts = this.handleSubmitPcts.bind(this);
         this.changePcts = this.changePcts.bind(this);
+        this.changeStock = this.changeStock.bind(this);
     }
 
     handleChange2 = value1 => {
@@ -45,6 +46,10 @@ class MainScreen extends React.Component {
 
     changePcts() {
         this.setState({sentimentPct: -1})
+    }
+
+    changeStock() {
+        this.setState({ symbol: '', sentimentPct: -1 })
     }
 
     render() {
@@ -98,6 +103,7 @@ class MainScreen extends React.Component {
                 <div>
                     <Row style={{marginTop: "1em"}}>
                         <Button onClick={this.changePcts}>Change Percentages</Button>
+                        <Button onClick={this.changeStock} style={{marginLeft: "1em"}}>Change Stock</Button>
                     </Row>
                     <ResultsPage
                         symbol={this.state.symbol}
