@@ -40,3 +40,8 @@ h2 {
 .bad-date {
     color: red
 }
+
+#sentTips {
+    min-height: 100%;
+    align-content: center;
+}
