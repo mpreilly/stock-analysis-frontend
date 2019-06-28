@@ -6,8 +6,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <MainScreen />
+        <h1>iSentiment Stock Analysis</h1>
       </header>
+      <div id="app-body">
+        <MainScreen id="main-screen"/>
+      </div>
     </div>
   );
 }

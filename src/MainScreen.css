@@ -10,3 +10,17 @@
   bottom: 0;
   width: 500px
 }
+
+#techValue {
+    text-align: right;
+}
+
+#sentvalue {
+    text-align: left;
+    padding-left: -1em
+}
+
+#valuesRow {
+    width: 100%;
+    margin-top: 2em
+}
