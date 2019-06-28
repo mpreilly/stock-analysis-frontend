@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container , Row, Col, ListGroup } from "react-bootstrap";
+import { Container , Row, Col, ListGroup, Button } from "react-bootstrap";
 import './ResultsPage.css'
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ReferenceLine, ResponsiveContainer } from 'recharts'
 
@@ -27,15 +27,8 @@ class ResultsPage extends React.Component {
         var apiKey = "8YO9J2LZLTZS952M"
         // var url = "https://www.alphavantage.co/"
 
-        var url = "/"
-        // fetch(url + "bollinger-rating/" + this.props.symbol)
-        // .then(response => response.json())
-        // .then(data => this.setState({bbRating: data}))
-        // this.setState({bbRating: getBollingerRating('BLK', 5)})
-
-        // fetch(url + "RSI-rating/" + this.props.symbol)
-        // .then(response => response.json())
-        // .then(data => this.setState({rsiRating: data}))
+        var url = this.props.symbol === 'BLK' ? "/" : "/" + this.props.symbol + "/"
+        console.log("calling api starting with " + url)
 
         if (url === "https://www.alphavantage.co/") {
             fetch(url + `query?function=RSI&symbol=${this.props.symbol}&interval=daily&time_period=14&series_type=close&apikey=${apiKey}`)
@@ -230,7 +223,7 @@ class ResultsPage extends React.Component {
                 </div>
                 <Container>
                     <Row>
-                        <h2>Overall Rating: {(((this.state.bbRating + this.state.rsiRating) / 2.0) * (this.props.techPct / 100) + this.state.sentRating * (this.props.sentPct / 100)).toFixed(2)}</h2>
+                        <h2>Current Overall Rating: {(((this.state.bbRating + this.state.rsiRating) / 2.0) * (this.props.techPct / 100) + this.state.sentRating * (this.props.sentPct / 100)).toFixed(2)}</h2>
                     </Row>
                     <Row>
                         <Col className="categoryCol">
@@ -255,11 +248,12 @@ class ResultsPage extends React.Component {
                         </Col>
                     </Row>
                     <hr />
+                    <h2>Historical Technical &amp; Sentiment Data</h2>
                     {Object.keys(this.state.pbData).map(date => {
                         if (this.state.pbData[date]['pb'] < 0.1 && this.state.rsiData[date]['RSI'] < 35) {
-                            return ( <Row className="date-good-bad"><p className="good-date">{date} is good for buying because %B is low and RSI is low. </p> </Row> )
+                            return ( <Row className="date-good-bad"><p className="good-date">{date} was good for buying because %B was low and RSI was low. </p> </Row> )
                         } else if (this.state.pbData[date]['pb'] > 0.9 && this.state.rsiData[date]['RSI'] > 75) {
-                            return ( <Row className="date-good-bad"><p className="bad-date">{date} is bad for buying because %B is high and RSI is high. </p> </Row> )
+                            return ( <Row className="date-good-bad"><p className="bad-date">{date} was bad for buying because %B was high and RSI was high. </p> </Row> )
                         } else {
                             return (null)
                         }
@@ -277,9 +271,9 @@ class ResultsPage extends React.Component {
                                 <Legend />
                                 {Object.keys(this.state.pbData).map(date => {
                                     if (this.state.pbData[date]['pb'] < 0.1 && this.state.rsiData[date]['RSI'] < 35) {
-                                        return ( <ReferenceLine x={date} stroke="green" label="good" /> )
+                                        return ( <ReferenceLine x={date} stroke="green"  /> )
                                     } else if (this.state.pbData[date]['pb'] > 0.9 && this.state.rsiData[date]['RSI'] > 75) {
-                                        return ( <ReferenceLine x={date} stroke="red" label="bad" /> )
+                                        return ( <ReferenceLine x={date} stroke="red" /> )
                                     } else {return null}
                                 })}
                             </LineChart>

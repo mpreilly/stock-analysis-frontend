@@ -15,12 +15,13 @@ class MainScreen extends React.Component {
             sentimentPct: -1,
             technicalPct: -1,
             value1: 50,
-            listdata: [ {key: "BLK", value: "Blackrock"}, {key: "MSFT", value: "Microsoft"} ]
+            listdata: [ {key: "BLK", value: "Blackrock"}, {key: "FB", value: "Facebook"} ]
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSubmitPcts = this.handleSubmitPcts.bind(this);
+        this.changePcts = this.changePcts.bind(this);
     }
 
     handleChange2 = value1 => {
@@ -40,6 +41,10 @@ class MainScreen extends React.Component {
 
     handleSubmitPcts() {
         this.setState({ sentimentPct: 100 - this.state.value1, technicalPct: this.state.value1 })
+    }
+
+    changePcts() {
+        this.setState({sentimentPct: -1})
     }
 
     render() {
@@ -90,11 +95,16 @@ class MainScreen extends React.Component {
             )
         } else {
             return (
-                <ResultsPage
-                    symbol={this.state.symbol}
-                    techPct={this.state.technicalPct}
-                    sentPct={this.state.sentimentPct}
-                />
+                <div>
+                    <Row style={{marginTop: "1em"}}>
+                        <Button onClick={this.changePcts}>Change Percentages</Button>
+                    </Row>
+                    <ResultsPage
+                        symbol={this.state.symbol}
+                        techPct={this.state.technicalPct}
+                        sentPct={this.state.sentimentPct}
+                    />
+                </div>
             )
         }
     }
