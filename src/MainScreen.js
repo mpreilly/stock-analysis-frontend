@@ -3,6 +3,7 @@ import './MainScreen.css'
 import Slider from 'react-rangeslider'
 import 'react-rangeslider/lib/index.css'
 import ResultsPage from './components/ResultsPage'
+import logo from './logo.jpg'
 import {Button, Row, Col} from 'react-bootstrap'
 
 class MainScreen extends React.Component {
@@ -49,6 +50,8 @@ class MainScreen extends React.Component {
       }
         if (this.state.symbol === '') {
             return (
+                <div>
+                <img id="logo" src={logo} width="400"/>
                 <form onSubmit={this.handleSubmit}>
                     <label>Choose the stock symbol you are interested in:<br/>
                     <select style={{width:200}} onChange={this.handleChange}>
@@ -62,6 +65,7 @@ class MainScreen extends React.Component {
                     </label>
                     <input id="select" type="submit" value="Select"/>
                 </form>
+                </div>
             )
         } else if (this.state.sentimentPct === -1) {
           const { value1 } = this.state
